@@ -29,7 +29,7 @@ def download_audio(video_id, temp_dir):
             '--audio-quality', '0', '-o', output_template,
             f'https://www.youtube.com/watch?v={video_id}'
         ]
-        subprocess.run(command, check=True, capture_output=True, text=True)
+        result = subprocess.run(command, check=True, capture_output=True, text=True)
         print("STDOUT:", result.stdout)
         print("STDERR:", result.stderr)
 
