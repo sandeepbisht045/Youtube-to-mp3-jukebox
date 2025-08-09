@@ -7,9 +7,6 @@ from pathlib import Path
 from django.shortcuts import render
 from django.conf import settings
 from pydub import AudioSegment
-from .settings import YOUTUBE_API_KEY
-
-API_KEY = YOUTUBE_API_KEY
 
 def index(request):
     """Renders the main page with the URL input form."""
@@ -43,11 +40,11 @@ def create_jukebox_view(request):
     Handles the form submission, creates the jukebox, and provides a download link.
     """
     if request.method != 'POST':
-        return render(request, 'jukebox_app/index.html', {'error': 'Invalid request method.'})
+        return render(request, 'index.html', {'error': 'Invalid request method.'})
 
     urls_text = request.POST.get('urls')
     if not urls_text:
-        return render(request, 'jukebox_app/index.html', {'error': 'Please provide at least one YouTube URL.'})
+        return render(request, 'index.html', {'error': 'Please provide at least one YouTube URL.'})
 
     video_urls = [url.strip() for url in urls_text.splitlines() if url.strip()]
     
@@ -70,7 +67,7 @@ def create_jukebox_view(request):
 
     if not mp3_paths:
         shutil.rmtree(temp_dir) # Clean up
-        return render(request, 'jukebox_app/index.html', {'error': 'Could not download audio for any of the provided URLs.'})
+        return render(request, 'index.html', {'error': 'Could not download audio for any of the provided URLs.'})
 
     # Combine audio files
     combined_audio = AudioSegment.empty()
