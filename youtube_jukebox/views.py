@@ -23,12 +23,16 @@ def download_audio(video_id, temp_dir):
     final_mp3_path = os.path.join(temp_dir, f"{video_id}.mp3")
     
     try:
+        print("Testing yt-dlp directly...")
         command = [
             'yt-dlp', '--extract-audio', '--audio-format', 'mp3',
             '--audio-quality', '0', '-o', output_template,
             f'https://www.youtube.com/watch?v={video_id}'
         ]
         subprocess.run(command, check=True, capture_output=True, text=True)
+        print("STDOUT:", result.stdout)
+        print("STDERR:", result.stderr)
+
         return final_mp3_path if os.path.exists(final_mp3_path) else None
     except Exception as e:
         print(f"Error downloading {video_id}: {e}")
