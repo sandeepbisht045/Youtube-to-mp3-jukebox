@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Jukebox Creator</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f4f7f6; color: #333; line-height: 1.6; padding: 20px; }
+        .container { max-width: 800px; margin: 40px auto; padding: 30px; background-color: #fff; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; }
+        textarea { width: 100%; min-height: 150px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 16px; margin-bottom: 20px; box-sizing: border-box; }
+        .btn { display: block; width: 100%; padding: 15px; background-color: #3498db; color: white; border: none; border-radius: 5px; font-size: 18px; cursor: pointer; transition: background-color 0.3s; }
+        .btn:hover { background-color: #2980b9; }
+        .error { color: #e74c3c; background-color: #fbecec; border: 1px solid #e74c3c; padding: 10px; border-radius: 5px; margin-bottom: 20px; text-align: center; }
+        .loader { display: none; margin: 20px auto; border: 8px solid #f3f3f3; border-radius: 50%; border-top: 8px solid #3498db; width: 60px; height: 60px; animation: spin 2s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>YouTube to MP3 Jukebox</h1>
+        <p>Paste one YouTube URL per line. The audio from each video will be combined into a single MP3 file.</p>
+        
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+
+        <form id="jukebox-form" action="{% url 'create_jukebox' %}" method="post">
+            {% csrf_token %}
+            <textarea name="urls" placeholder="https://www.youtube.com/watch?v=...\nhttps://youtu.be/..." required></textarea>
+            <button type="submit" class="btn">Create My Jukebox</button>
+        </form>
+        <div id="loader" class="loader"></div>
+    </div>
+
+    <script>
+        document.getElementById('jukebox-form').addEventListener('submit', function() {
+            document.querySelector('.btn').style.display = 'none';
+            document.getElementById('loader').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
